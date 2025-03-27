@@ -1,16 +1,17 @@
 (ns langtons-ant.core
   (:require [quil.core :as q]
             [quil.middleware :as m]
-            [langtons-ant.ant :as ant]))
+            [langtons-ant.ant :as ant]
+            [langtons-ant.small-ant :as small-ant]))
 
 (def grid-width 100)
 (def grid-height 100)
 (def cell-size 12)
 
 (defn setup []
-  (q/frame-rate 30)
+  (q/frame-rate 300)
   (q/background 300)
-  {:grid (vec (repeat grid-height (vec (repeat grid-width 0))))
+  {:grid (vec (repeat grid-height (vec (repeat grid-width :white))))
    :ant [(/ grid-width 2) (/ grid-height 2)]
    :orientation 0});in Quil, [0 0] is the top left corner
 
@@ -30,13 +31,11 @@
   (let [[ant-x ant-y] (get state :ant)]
     (q/rect (* ant-x cell-size) (* ant-y cell-size) cell-size cell-size)))
 
-
-(q/defsketch langtons-ant
-   :title "Langton's Ant"
-   :setup setup
-   :draw draw
-   :update ant/update-state
-   :size [(* cell-size grid-width) (* cell-size grid-height)]
-   :middleware [m/fun-mode])
-
-(defn -main [& args])
+(defn -main [& args]
+  (q/defsketch langtons-ant
+               :title "Langton's Ant"
+               :setup setup
+               :draw draw
+               :update small-ant/step
+               :size [(* cell-size grid-width) (* cell-size grid-height)]
+               :middleware [m/fun-mode]))
