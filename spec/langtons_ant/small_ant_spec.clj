@@ -5,26 +5,14 @@
 (def grid-width 10)
 (def grid-height 10)
 
-(def first-step-grid
-  [
-   [:white :white :white :white :white :white :white :white :white :white]
-   [:white :white :white :white :white :white :white :white :white :white]
-   [:white :white :white :white :white :white :white :white :white :white]
-   [:white :white :white :white :white :white :white :white :white :white]
-   [:white :white :white :white :white :white :white :white :white :white]
-   [:white :white :white :white :black :white :white :white :white :white]
-   [:white :white :white :white :white :white :white :white :white :white]
-   [:white :white :white :white :white :white :white :white :white :white]
-   [:white :white :white :white :white :white :white :white :white :white]
-   [:white :white :white :white :white :white :white :white :white :white]
-   ])
-
 (def starting-grid
   (vec (repeat grid-height (vec (repeat grid-width :white)))))
+(def inverse-starting-grid
+  (vec (repeat grid-height (vec (repeat grid-width :black)))))
 
 (def initial-state
   {:grid starting-grid
-   :ant [(/ grid-height 2) (/ grid-width 2)]
+   :ant [(/ grid-width 2) (/ grid-height 2)]
    :orientation :up})
 
 (def first-step
@@ -32,11 +20,15 @@
    :ant [6 5]
    :orientation :right})
 
-#_(def inverse-initial-state
-  {:grid (vec (repeat grid-height (vec (repeat grid-width :white))))
-   :ant [(/ grid-height 2) (/ grid-width 2)]
+(def inverse-initial-state
+  {:grid inverse-starting-grid
+   :ant [(/ grid-width 2) (/ grid-height 2)]
    :orientation :up})
 
+(def inverse-first-step
+  {:grid (assoc-in inverse-starting-grid [5 5] :white)
+   :ant [4 5]
+   :orientation :left})
 
 (describe "small-ant"
 
@@ -66,4 +58,6 @@
 
   (it "changes a white cell to black and turns right, then steps forward"
     (should= first-step (step initial-state)))
-  )
+
+  (it "changes a black cell to white and turns left, then steps forward"
+    (should= inverse-first-step (step inverse-initial-state))))
