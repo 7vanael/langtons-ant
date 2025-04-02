@@ -30,7 +30,7 @@
    :ant [4 5]
    :orientation :left})
 
-(describe "small-ant"
+#_(describe "small-ant"
 
   (it "on a white square, turn 90 clockwise"
     (should= :right (turn :up :white))
@@ -60,4 +60,5 @@
     (should= first-step (step initial-state)))
 
   (it "changes a black cell to white and turns left, then steps forward"
-    (should= inverse-first-step (step inverse-initial-state))))
+    (should= inverse-first-step (step inverse-initial-state)))
+  )

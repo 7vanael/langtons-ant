@@ -1,11 +1,5 @@
 (ns langtons-ant.small-ant)
 
-(def direction-map
-  {:up    [0 -1]
-   :right [1 0]
-   :down  [0 1]
-   :left  [-1 0]})
-
 (def directions
   [:up :right :down :left])
 
@@ -18,21 +12,23 @@
     (nth directions new-index)))
 
 (defn inverse-color [color]
-  (if (white? color)
-    :black
-    :white))
+  (if (white? color) :black :white))
+
+(def direction-map
+  {:up    [0 -1]
+   :right [1 0]
+   :down  [0 1]
+   :left  [-1 0]})
 
 (defn move [[x y] orientation]
   (let [[change-x change-y] (get direction-map orientation)]
     [(+ x change-x) (+ y change-y)]))
 
 (defn step [{:keys [grid ant orientation]}]
-  (let [[row column] ant
-        current-color   (get-in grid [row column])
+  (let [current-color   (get-in grid ant)
         opposite-color  (inverse-color current-color)
         new-orientation (turn orientation current-color)
-        new-position    (move [row column] new-orientation)]
-
-    {:grid        (assoc-in grid [row column] opposite-color)
+        new-position    (move ant new-orientation)]
+    {:grid        (assoc-in grid ant opposite-color)
      :ant         new-position
      :orientation new-orientation}))

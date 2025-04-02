@@ -1,11 +1,12 @@
 (ns langtons-ant.core
   (:require [quil.core :as q]
             [quil.middleware :as m]
-            [langtons-ant.small-ant :as small-ant]))
+            [langtons-ant.small-ant :as small-ant]
+            [langtons-ant.ant :as ant]))
 
-(def grid-width 100)
-(def grid-height 100)
-(def cell-size 12)
+(def grid-width 40)
+(def grid-height 40)
+(def cell-size 18)
 
 (defn setup []
   (q/frame-rate 60)
@@ -38,6 +39,6 @@
                :title "Langton's Ant"
                :setup setup
                :draw draw
-               :update small-ant/step
+               :update ant/step
                :size [(* cell-size grid-width) (* cell-size grid-height)]
                :middleware [m/fun-mode]))
